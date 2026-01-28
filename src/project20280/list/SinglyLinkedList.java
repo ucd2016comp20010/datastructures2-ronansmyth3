@@ -22,7 +22,8 @@ public class SinglyLinkedList<E> implements List<E> {
          * @param n reference to a node that should follow the new node
          */
         public Node(E e, Node<E> n) {
-            // TODO
+            this.element = e;
+            this.next = n;
         }
 
         // Accessor methods
@@ -33,7 +34,7 @@ public class SinglyLinkedList<E> implements List<E> {
          * @return the element stored at the node
          */
         public E getElement() {
-            return null;
+            return element;
         }
 
         /**
@@ -42,8 +43,7 @@ public class SinglyLinkedList<E> implements List<E> {
          * @return the following node
          */
         public Node<E> getNext() {
-            // TODO
-            return null;
+            return next;
         }
 
         // Modifier methods
@@ -54,7 +54,7 @@ public class SinglyLinkedList<E> implements List<E> {
          * @param n the node that should follow this one
          */
         public void setNext(Node<E> n) {
-            // TODO
+            this.next = n;
         }
     } //----------- end of nested Node class -----------
 
@@ -74,54 +74,166 @@ public class SinglyLinkedList<E> implements List<E> {
 
     //@Override
     public int size() {
-        // TODO
-        return 0;
+        return size;
     }
 
     //@Override
     public boolean isEmpty() {
-        // TODO
-        return false;
+        return size == 0;
     }
 
     @Override
     public E get(int position) {
-        // TODO
-        return null;
+        // check the position is valid
+        if(position < 0 || position >= size)
+        {
+            throw new IndexOutOfBoundsException();
+        }
+        // loop through list moving till we get to the correct index
+        Node<E> current = head;
+        for(int i = 0; i < position; i++)
+        {
+            current = current.next;
+        }
+        // once at the correct index return the element
+        return current.getElement();
     }
 
     @Override
-    public void add(int position, E e) {
-        // TODO
+    public void add(int position, E e)
+    {
+        // check if the position is valid
+        if(position < 0 || position > size)
+        {
+            throw new IndexOutOfBoundsException();
+        }
+
+        // base case if its first element set head to new element
+        if(position == 0)
+        {
+            addFirst(e);
+            // return to stop it from duplicating size++
+            return;
+        }
+        // otherwise loop through until we find position
+        else
+        {
+            Node<E> current = head;
+            Node<E> previous = head;
+            for(int i = 0; i < position; i++)
+            {
+                previous = current;
+                current = current.next;
+            }
+            // set previous to node to point to new node and the new node point to current node
+            previous.next = new Node<>(e, current);
+        }
+        size++;
     }
 
 
     @Override
     public void addFirst(E e) {
-        // TODO
+        // set head to the new node
+        head = new Node<>(e, head);
+        size++;
     }
 
     @Override
     public void addLast(E e) {
-        // TODO
+        // check if its empty set this to the head
+        if(isEmpty())
+        {
+            head = new Node<>(e, null);
+        }
+        // otherwise loop through till we reach a node that points to null
+        else
+        {
+            Node<E> current = head;
+            while(current.next != null)
+            {
+                current = current.next;
+            }
+            // set this node to point to the new node and new node points to null
+            current.next = new Node<>(e, null);
+        }
+        size++;
     }
 
     @Override
     public E remove(int position) {
-        // TODO
-        return null;
+        // check if the position is valid
+        if(position < 0 || position >= size)
+        {
+            throw new IndexOutOfBoundsException();
+        }
+        // if removing first element call method
+        if(position == 0)
+        {
+            return removeFirst();
+        }
+        // if we are removing the last element call method
+        if(position == size - 1)
+        {
+            return removeLast();
+        }
+        // loop through till at correct index and store the previous and current
+        Node<E> current = head;
+        Node<E> previous = head;
+        for(int i = 0; i < position - 1; i++)
+        {
+            previous = current;
+            current = current.next;
+        }
+        // set the previous.next pointer to current.next
+        // return removed element
+        previous.next = current.next;
+        size--;
+        return current.getElement();
+
     }
 
     @Override
     public E removeFirst() {
-        // TODO
-        return null;
+        // if empty remove nothing
+        if(isEmpty())
+        {
+            return null;
+        }
+        // store old head so we can return it after
+        E oldHead = head.getElement();
+        // set head to the next node
+        head = head.next;
+        size--;
+        return oldHead;
     }
 
     @Override
     public E removeLast() {
-        // TODO
-        return null;
+        // if empty remove nothing
+        if(isEmpty())
+        {
+            return null;
+        }
+        // if its only got 1 element call remove first
+        if(size == 1)
+        {
+            return removeFirst();
+        }
+
+        // otherwise loop through until we reach a node which points to null
+        Node<E> current = head;
+        Node<E> previous = head;
+        while(current.next != null)
+        {
+            previous = current;
+            current = current.next;
+        }
+        // set the previous node before the last node to point to null
+        previous.next = null;
+        size--;
+        // return the current node which is the last node
+        return current.getElement();
     }
 
     //@Override
@@ -169,10 +281,10 @@ public class SinglyLinkedList<E> implements List<E> {
         ll.addFirst(3);
         ll.addFirst(4);
         ll.addLast(-1);
-        //ll.removeLast();
-        //ll.removeFirst();
-        //System.out.println("I accept your apology");
-        //ll.add(3, 2);
+        ll.removeLast();
+        ll.removeFirst();
+        System.out.println("I accept your apology");
+        ll.add(3, 2);
         System.out.println(ll);
         ll.remove(5);
         System.out.println(ll);
