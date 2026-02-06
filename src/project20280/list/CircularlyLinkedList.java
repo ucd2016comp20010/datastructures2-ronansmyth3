@@ -64,7 +64,33 @@ public class CircularlyLinkedList<E> implements List<E> {
      */
     @Override
     public void add(int i, E e) {
-        // TODO
+        if(i < 0 || i > size)
+        {
+            throw new IndexOutOfBoundsException();
+        }
+        if(i == 0)
+        {
+            addFirst(e);
+            return;
+        }
+        else if(i == size)
+        {
+            addLast(e);
+            return;
+        }
+        else
+        {
+            Node<E> previous = tail.next;
+            Node<E> current = tail.next;
+            for(int j = 0; j < i; j++)
+            {
+                previous = current;
+                current = current.next;
+            }
+            Node<E> newNode = new Node<>(e, current);
+            previous.next = newNode;
+            size++;
+        }
     }
 
     @Override
