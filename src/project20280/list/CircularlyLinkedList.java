@@ -95,8 +95,32 @@ public class CircularlyLinkedList<E> implements List<E> {
 
     @Override
     public E remove(int i) {
-        // TODO
-        return null;
+        if(i < 0 || i >= size)
+        {
+            throw new IndexOutOfBoundsException();
+        }
+        if(i == 0)
+        {
+            return removeFirst();
+        }
+        else if(i == size - 1)
+        {
+            return removeLast();
+        }
+        else
+        {
+            Node<E> previous = tail.next;
+            Node<E> current = tail.next;
+            for(int j = 0; j < i; j++)
+            {
+                previous = current;
+                current = current.next;
+            }
+            previous.next = current.next;
+            size--;
+            return current.getData();
+
+        }
     }
 
     public void rotate() {
@@ -135,14 +159,51 @@ public class CircularlyLinkedList<E> implements List<E> {
 
     @Override
     public E removeFirst() {
-        // TODO
-        return null;
+        if(isEmpty())
+        {
+            return null;
+        }
+        if(size == 1)
+        {
+            E value = tail.getData();
+            tail = null;
+            size--;
+            return value;
+        }
+        else
+        {
+            Node<E> head = tail.next;
+            tail.next = head.next;
+            size--;
+            return head.getData();
+        }
+
     }
 
     @Override
-    public E removeLast() {
-        // TODO
-        return null;
+    public E removeLast()
+    {
+        if(isEmpty())
+        {
+            return null;
+        }
+        else if(size == 1)
+        {
+            return removeFirst();
+        }
+        else
+        {
+            Node<E> current = tail.next;
+            while(current.next != tail)
+            {
+                current = current.next;
+            }
+            E value = tail.getData();
+            current.next = tail.next;
+            tail = current;
+            size--;
+            return value;
+        }
     }
 
     @Override
