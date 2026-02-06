@@ -7,7 +7,7 @@ import java.util.Iterator;
 public class CircularlyLinkedList<E> implements List<E> {
 
     private class Node<T> {
-        private final T data;
+        private T data;
         private Node<T> next;
 
         public Node(T e, Node<T> n) {
@@ -42,12 +42,11 @@ public class CircularlyLinkedList<E> implements List<E> {
 
     @Override
     public E get(int i) {
-        // check if valid
         if(i < 0 || i >= size)
         {
             throw new IndexOutOfBoundsException();
         }
-        // loop till node
+
         Node<E> current = tail.next;
         for(int j = 0; j < i; j++)
         {
@@ -65,74 +64,20 @@ public class CircularlyLinkedList<E> implements List<E> {
      */
     @Override
     public void add(int i, E e) {
-        // check if the position is valid
-        if(i < 0 || i> size)
-        {
-            throw new IndexOutOfBoundsException();
-        }
-
-        // base case if its first element set head to new element
-        if(i == 0)
-        {
-            addFirst(e);
-            // return to stop it from duplicating size++
-            return;
-        }
-        // if its the last element
-        if(i == size)
-        {
-            addLast(e);
-            return;
-        }
-        // loop and update pointers
-        Node<E> previous = tail.next;
-        Node<E> current = tail.next;
-        for(int j = 0; j < i; j++)
-        {
-            previous = current;
-            current = current.next;
-        }
-        Node<E> newNode = new Node<>(e, current);
-        previous.next = newNode;
-        size++;
-
+        // TODO
     }
 
     @Override
     public E remove(int i) {
-        // check if the position is valid
-        if(i < 0 || i >= size)
-        {
-            throw new IndexOutOfBoundsException();
-        }
-        // if removing first element call method
-        if(i == 0)
-        {
-            return removeFirst();
-        }
-        // if we are removing the last element call method
-        if(i == size - 1)
-        {
-            return removeLast();
-        }
-
-        // loop and update pointers
-        Node<E> previous = tail.next;
-        Node<E> current = tail.next;
-        for(int j = 0; j < i - 1; j++)
-        {
-            previous = current;
-            current = current.next;
-        }
-        // set the previous.next pointer to current.next
-        // return removed element
-        previous.next = current.next;
-        size--;
-        return current.getData();
+        // TODO
+        return null;
     }
 
     public void rotate() {
-        tail = tail.next;
+        if(tail != null)
+        {
+            tail = tail.next;
+        }
     }
 
     private class CircularlyLinkedListIterator<E> implements Iterator<E> {
@@ -164,88 +109,53 @@ public class CircularlyLinkedList<E> implements List<E> {
 
     @Override
     public E removeFirst() {
-        // if empty remove nothing
-        if(isEmpty())
-        {
-            return null;
-        }
-        // check if there is only a single element
-        if(size == 1)
-        {
-            E oldHead = tail.next.getData();
-            // set head to the next node
-            tail = null;
-            size--;
-            return oldHead;
-        }
-        // otherwise make tail.next skip the first node
-        E oldHead = tail.next.getData();
-        tail.next = tail.next.next;
-        size--;
-        return oldHead;
+        // TODO
+        return null;
     }
 
     @Override
     public E removeLast() {
-        if(isEmpty())
-        {
-            return null;
-        }
-        // check if there is only a single element
-        if(size == 1)
-        {
-            return removeFirst();
-        }
-        // otherwise loop till last node
-        Node<E> current = tail.next;
-        while(current.next != tail)
-        {
-            current = current.next;
-        }
-        // skip over node and move tail back
-        E oldTail = current.next.getData();
-        current.next = tail.next;
-        tail = current;
-        size--;
-        return  oldTail;
+        // TODO
+        return null;
     }
 
     @Override
     public void addFirst(E e) {
-        // check if this is the only node
-        if(size == 0)
+        if(isEmpty())
         {
-            Node<E> newNode = new Node<>(e, null);
-            tail = newNode;
-            newNode.next = tail;
+            tail= new Node<>(e, null);
+            tail.setNext(tail);
             size++;
+            return;
         }
-        // otherwise make tail point to new node and new node point to next
-        else
-        {
-            Node<E> newNode = new Node<>(e, tail.next);
-            tail.next = newNode;
-            size++;
-        }
-
+        Node<E> newNode = new Node<>(e, tail.next);
+        tail.next = newNode;
+        size++;
     }
 
     @Override
     public void addLast(E e) {
-        // if empty add it as first element
-        if(size == 0)
+        if(isEmpty())
         {
             addFirst(e);
+            return;
         }
-        // otherwise loop till end, add a node and move tail up
+        else if(size == 1)
+        {
+            Node<E> head = tail;
+            Node<E> newNode = new Node<>(e, head);
+            head.next = newNode;
+            tail = newNode;
+            size++;
+        }
         else
         {
-            Node<E> newNode = new Node<>(e, tail.next);
             Node<E> current = tail.next;
-            while(current.next != tail)
+            while(current != tail)
             {
                 current = current.next;
             }
+            Node<E> newNode = new Node<>(e, tail.next);
             current.next = newNode;
             tail = newNode;
             size++;
