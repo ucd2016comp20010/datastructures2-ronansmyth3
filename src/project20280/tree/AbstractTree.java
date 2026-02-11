@@ -26,9 +26,10 @@ public abstract class AbstractTree<E> implements Tree<E> {
      * @throws IllegalArgumentException if p is not a valid Position for this tree.
      */
     @Override
-    public boolean isInternal(Position<E> p) {
-        // TODO
-        return false;
+    public boolean isInternal(Position<E> p)
+    {
+        // return boolean of if p has at least 1 child
+        return numChildren(p) > 0;
     }
 
     /**
@@ -39,9 +40,10 @@ public abstract class AbstractTree<E> implements Tree<E> {
      * @throws IllegalArgumentException if p is not a valid Position for this tree.
      */
     @Override
-    public boolean isExternal(Position<E> p) {
-        // TODO
-        return false;
+    public boolean isExternal(Position<E> p)
+    {
+        // return boolean of if p has 0 children
+        return numChildren(p) == 0;
     }
 
     /**
@@ -52,8 +54,8 @@ public abstract class AbstractTree<E> implements Tree<E> {
      */
     @Override
     public boolean isRoot(Position<E> p) {
-        // TODO
-        return false;
+        // if parent doesn't exist then it's the root
+        return parent(p) == null;
     }
 
     /**
@@ -65,8 +67,12 @@ public abstract class AbstractTree<E> implements Tree<E> {
      */
     @Override
     public int numChildren(Position<E> p) {
-        // TODO
-        return 0;
+        int count = 0;
+        for(Position<E> child : children(p))
+        {
+            count++;
+        }
+        return count;
     }
 
     /**
@@ -100,8 +106,16 @@ public abstract class AbstractTree<E> implements Tree<E> {
      * @throws IllegalArgumentException if p is not a valid Position for this tree.
      */
     public int depth(Position<E> p) throws IllegalArgumentException {
-        // TODO
-        return 0;
+        // base case root is 0 depth
+        if(isRoot(p))
+        {
+            return 0;
+        }
+        // recursive case 1 + parent's depth
+        else
+        {
+            return 1 + depth(parent(p));
+        }
     }
 
     /**
@@ -118,8 +132,12 @@ public abstract class AbstractTree<E> implements Tree<E> {
     }
 
     public int height_recursive(Position<E> p) {
-        // TODO
-        return 0;
+        int height = 0;
+        for(Position<E> child : children(p))
+        {
+            height = Math.max(height, 1 + height_recursive(child));
+        }
+        return height;
     }
 
     /**
@@ -180,7 +198,13 @@ public abstract class AbstractTree<E> implements Tree<E> {
      * @param snapshot a list to which results are appended
      */
     private void preorderSubtree(Position<E> p, List<Position<E>> snapshot) {
-        // TODO
+        // visit position first
+        snapshot.add(p);
+        // for each of children recursive call function
+        for(Position<E> child : children(p))
+        {
+            preorderSubtree(child, snapshot);
+        }
     }
 
     /**
@@ -189,8 +213,10 @@ public abstract class AbstractTree<E> implements Tree<E> {
      * @return iterable collection of the tree's positions in preorder
      */
     public Iterable<Position<E>> preorder() {
-        // TODO
-        return null;
+        List<Position<E>> snapshot = new ArrayList<>();
+        if (!isEmpty())
+            preorderSubtree(root(), snapshot);   // fill the snapshot recursively
+        return snapshot;
     }
 
     /**
@@ -201,7 +227,11 @@ public abstract class AbstractTree<E> implements Tree<E> {
      * @param snapshot a list to which results are appended
      */
     private void postorderSubtree(Position<E> p, List<Position<E>> snapshot) {
-        // TODO
+        for(Position<E> child : children(p))
+        {
+            preorderSubtree(child, snapshot);
+        }
+        snapshot.add(p);
     }
 
     /**
@@ -222,7 +252,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
      * @return iterable collection of the tree's positions in breadth-first order
      */
     public Iterable<Position<E>> breadthfirst() {
-        // TODO
+
         return null;
     }
 }
