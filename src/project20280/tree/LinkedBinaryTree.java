@@ -328,12 +328,19 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
     }
 
     public void createLevelOrder(ArrayList<E> l) {
-        // TODO
+        root = createLevelOrderHelper(l, root, 0);
     }
 
     private Node<E> createLevelOrderHelper(java.util.ArrayList<E> l, Node<E> p, int i) {
-        // TODO
-        return null;
+        if(i < l.size())
+        {
+            Node<E> node = createNode(l.get(i), p, null, null);
+            node.left = createLevelOrderHelper(l, node, 2 * i + 1);
+            node.right = createLevelOrderHelper(l, node, 2 * i + 2);
+            size++;
+            return node;
+        }
+        return p;
     }
 
     public void createLevelOrder(E[] arr) {
