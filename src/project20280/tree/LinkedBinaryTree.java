@@ -22,6 +22,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
      */
     private int size = 0; // number of nodes in the tree
 
+    private int preorderIndex = 0;
     /**
      * Constructs an empty binary tree.
      */
@@ -58,6 +59,12 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         String[] arr = { "A", "B", "C", "D", "E", null, "F", null, null, "G", "H", null, null, null, null };
         bt.createLevelOrder(arr);
         System.out.println(bt.toBinaryTreeString());
+
+        Integer [] inorder = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+        Integer [] preorder= {18, 2, 1, 14, 13, 12, 4, 3, 9, 6, 5, 8, 7, 10, 11, 15, 16, 17, 28, 23, 19, 22, 20, 21, 24, 27, 26, 25, 29, 30};
+        LinkedBinaryTree<Integer> bt2 = new LinkedBinaryTree<>();
+        bt2.construct(inorder, preorder);
+        System.out.println(bt2.toBinaryTreeString());
     }
 
 
@@ -357,6 +364,40 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
             return node;
         }
         return p;
+    }
+
+    private void construct(E[] inorder, E[] preorder)
+    {
+        preorderIndex = 0;
+        size = 0;
+        root = constructHelper(inorder, preorder, 0, inorder.length - 1, null);
+    }
+
+    private Node<E> constructHelper(E[] inorder,E[] preorder, int startIndex, int endIndex, Node<E> parent)
+    {
+        // if start index has past end return
+        if (startIndex > endIndex)
+        {
+            return null;
+        }
+        // otherwise set the root element of subtree
+        E rootElement = preorder[preorderIndex++];
+        Node<E> node = createNode(rootElement, parent, null, null);
+        size++;
+
+        int index = startIndex;
+        // loop to find root element inorder
+        while(!inorder[index].equals(rootElement))
+        {
+            index++;
+        }
+
+
+        // Build left and right subtrees recursively
+        node.setLeft(constructHelper(inorder, preorder, startIndex, index - 1, node));
+        node.setRight(constructHelper(inorder, preorder, index + 1, endIndex, node));
+
+        return node;
     }
 
     public String toBinaryTreeString() {
