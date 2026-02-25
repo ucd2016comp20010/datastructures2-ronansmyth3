@@ -65,6 +65,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         LinkedBinaryTree<Integer> bt2 = new LinkedBinaryTree<>();
         bt2.construct(inorder, preorder);
         System.out.println(bt2.toBinaryTreeString());
+        bt.recursivePrintLeaves();
     }
 
 
@@ -399,6 +400,34 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
         return node;
     }
+
+    public void recursivePrintLeaves()
+    {
+        if(root != null)
+        {
+            printLeavesHelper(root);
+        }
+    }
+
+
+    public void printLeavesHelper(Node<E> node)
+    {
+        // base case we reached end
+        if(node == null || node.getElement() == null)
+        {
+            return;
+        }
+
+        if(node.left == null && node.right == null)
+        {
+            System.out.print(node.getElement() + " ");
+            return;
+        }
+
+        printLeavesHelper(node.left);
+        printLeavesHelper(node.right);
+    }
+
 
     public String toBinaryTreeString() {
         BinaryTreePrinter<E> btp = new BinaryTreePrinter<>(this);
