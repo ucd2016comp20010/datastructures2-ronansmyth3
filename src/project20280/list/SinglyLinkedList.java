@@ -270,6 +270,48 @@ public class SinglyLinkedList<E> implements List<E> {
         return sb.toString();
     }
 
+    public void reverse()
+    {
+        if(head != null)
+        {
+            head = reverseHelper(null, head);
+        }
+    }
+
+    public Node<E> reverseHelper(Node<E> current, Node<E> successor)
+    {
+        if (successor.next == null)
+        {
+            successor.next = current;
+            return successor;
+        }
+
+        Node<E> newNode = successor.next;
+        successor.next = current;
+        return reverseHelper(successor, newNode);
+    }
+
+    public SinglyLinkedList<E> recursiveCopy()
+    {
+        SinglyLinkedList<E> copiedList = new SinglyLinkedList<E>();
+        if(head!= null)
+        {
+            copiedList.head = copyHelper(this.head);
+        }
+
+        return copiedList;
+    }
+
+    public Node <E> copyHelper(Node<E> node)
+    {
+        if(node == null)
+        {
+            return null;
+        }
+        Node<E> newNode = new Node<>(node.getElement(), copyHelper(node.next));
+        return newNode;
+    }
+
     public static void main(String[] args) {
         SinglyLinkedList<Integer> ll = new SinglyLinkedList<Integer>();
         System.out.println("ll " + ll + " isEmpty: " + ll.isEmpty());
@@ -286,8 +328,10 @@ public class SinglyLinkedList<E> implements List<E> {
         System.out.println("I accept your apology");
         ll.add(3, 2);
         System.out.println(ll);
-        ll.remove(5);
+        ll.reverse();
         System.out.println(ll);
+        SinglyLinkedList<Integer> copy = ll.recursiveCopy();
+        System.out.println(copy);
 
     }
 }
