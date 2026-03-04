@@ -71,12 +71,13 @@ public class Recursion
 
         // biggest fib number with memorization
         array = new long[200];
-        System.out.println(memFib(199));
+        System.out.println("mem fib: " + memFib(199));
 
-        System.out.println(trib(9));
+        System.out.println("trib: " + trib(9));
 
-        System.out.println(mFunc(87));
+        System.out.println("mFunction: " + mFunc(87));
 
+        System.out.print("foo function: ");
         foo(2468);
     }
 }
