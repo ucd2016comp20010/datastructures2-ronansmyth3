@@ -356,7 +356,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
     }
 
     private Node<E> createLevelOrderHelper(E[] arr, Node<E> p, int i) {
-        if(i < arr.length)
+        if(i < arr.length && arr[i] != null)
         {
             Node<E> node = createNode(arr[i], p, null, null);
             node.left = createLevelOrderHelper(arr, node.left, 2 * i + 1);
@@ -403,6 +403,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 
     public void recursivePrintLeaves()
     {
+        // start with root
         if(root != null)
         {
             printLeavesHelper(root);
@@ -413,17 +414,19 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
     public void printLeavesHelper(Node<E> node)
     {
         // base case we reached end
-        if(node == null || node.getElement() == null)
+        if(node == null)
         {
             return;
         }
 
+        // if we find a leaf print it
         if(node.left == null && node.right == null)
         {
             System.out.print(node.getElement() + " ");
             return;
         }
 
+        // otherwise recursive call down the left and right nodes
         printLeavesHelper(node.left);
         printLeavesHelper(node.right);
     }

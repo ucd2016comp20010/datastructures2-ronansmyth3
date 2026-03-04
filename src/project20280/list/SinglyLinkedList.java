@@ -328,8 +328,10 @@ public class SinglyLinkedList<E> implements List<E> {
         System.out.println("I accept your apology");
         ll.add(3, 2);
         System.out.println(ll);
+        System.out.println("Reversing Linked list");
         ll.reverse();
         System.out.println(ll);
+        System.out.println("Copying linked list");
         SinglyLinkedList<Integer> copy = ll.recursiveCopy();
         System.out.println(copy);
 
