@@ -667,24 +667,9 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
         int n = 100;
         rnd.ints(1, n_max).limit(n).distinct().boxed().forEach(x -> treeMap.put(x, x));
 
-        Consumer<Integer> modify = x -> {
-            if (rnd.nextFloat() > 0.5)
-                treeMap.put(x, 0);
-            else
-                treeMap.remove(x);
-        };
+
         BinaryTreePrinter<Entry<Integer, Integer>> btp = new BinaryTreePrinter<>(treeMap.tree);
         System.out.println(btp.print());
 
-        rnd.ints(1, n_max).limit(10000000).boxed().forEach(modify);
-        System.out.println(btp.print());
-
-        AVLTreeMap<Integer, Integer> avl = new AVLTreeMap<Integer, Integer>();
-        for (Position<Entry<Integer, Integer>> i : treeMap.tree.inorder()) {
-            if (i.getElement() != null) {
-                avl.put(i.getElement().getKey(), 0);
-            }
-        }
-        System.out.println(avl.toBinaryTreeString());
     }
 }
