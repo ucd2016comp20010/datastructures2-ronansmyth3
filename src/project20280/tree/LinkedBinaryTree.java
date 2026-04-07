@@ -327,6 +327,24 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
                 }
             }
         }
+        else
+        {
+            if(parent == null)
+            {
+                root = null;
+            }
+            else
+            {
+                if(parent.left == node)
+                {
+                    parent.left = null;
+                }
+                else
+                {
+                    parent.right = null;
+                }
+            }
+        }
         size--;
         return node.getElement();
     }

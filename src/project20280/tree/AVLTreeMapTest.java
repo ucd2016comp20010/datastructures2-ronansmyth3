@@ -55,13 +55,13 @@ class AVLTreeMapTest {
         //assertEquals("26", map.remove(26));
         //assertEquals(11, map.size());
 
-        assertEquals("[4, 7, 8, 11, 12, 13, 14, 17, 53]", map.toString());
+        assertEquals("[⦰, 4, ⦰, 7, ⦰, 8, ⦰, 11, ⦰, 12, ⦰, 13, ⦰, 14, ⦰, 17, ⦰, 53, ⦰]", map.toString());
 
         map.remove(53);
 
         System.out.println(map.tree.toBinaryTreeString());
 
-        assertEquals("[4, 7, 8, 11, 12, 13, 14, 17]", map.toString());
+        assertEquals("[⦰, 4, ⦰, 7, ⦰, 8, ⦰, 11, ⦰, 12, ⦰, 13, ⦰, 14, ⦰, 17, ⦰]", map.toString());
 
     }
     
@@ -162,7 +162,15 @@ class AVLTreeMapTest {
 
     @Test
     void testEntrySet() {
-        fail("Not yet implemented");
+        AVLTreeMap<Integer, String> map = new AVLTreeMap<>();
+        //java.util.TreeMap<Integer, String> map = new java.util.TreeMap<>();
+        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+
+        for (Integer i : arr) {
+            map.put(i, Integer.toString(i));
+        }
+
+        assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", map.entrySet().toString());
     }
 
     @Test

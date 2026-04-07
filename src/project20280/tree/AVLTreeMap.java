@@ -101,6 +101,11 @@ public class AVLTreeMap<K, V> extends TreeMap<K, V> {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return tree.inorder().toString();
+    }
+
     public String toBinaryTreeString() {
         BinaryTreePrinter<Entry<K, V>> btp = new BinaryTreePrinter<>(this.tree);
         return btp.print();
