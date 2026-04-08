@@ -84,7 +84,39 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
          * Caller should ensure that p is not the root.
          */
         public void rotate(Position<Entry<K, V>> p) {
-            // TODO
+            Node<Entry<K, V>> nodeA = (Node<Entry<K,V>>) p;
+            Node<Entry<K, V>> nodeB = nodeA.getParent();
+            Node<Entry<K, V>> nodeC = nodeB.getParent();
+
+            // move node upwards
+            // if there's no node above b then we at root
+            if(nodeC == null)
+            {
+                root =  nodeA;
+                nodeA.setParent(null);
+            }
+            // otherwise relink C and A
+            else if(nodeB == nodeC.getLeft())
+            {
+                relink(nodeC, nodeA, true);
+            }
+            else
+            {
+                relink(nodeC, nodeA, false);
+            }
+            // link b and c back
+            // case 1 a is now on the left of b
+            if(nodeA == nodeB.getLeft())
+            {
+                relink(nodeB, nodeA.getRight(), true);
+                relink(nodeA, nodeB, false);
+            }
+            // case 2 a is now on the right of b
+            else
+            {
+                relink(nodeB, nodeA.getLeft(), false);
+                relink(nodeA, nodeB, true);
+            }
         }
 
         /**
@@ -116,8 +148,22 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
          * Caller should ensure that x has a grandparent.
          */
         public Position<Entry<K, V>> restructure(Position<Entry<K, V>> x) {
-            // TODO
-            return null;
+            Position<Entry<K, V>> y = parent(x);
+            Position<Entry<K, V>> z = parent(y);
+
+            // straight line
+            if(x == right(y) && y == right(z) || x == left(y) && y == left(z))
+            {
+                rotate(y);
+                return y;
+            }
+            // otherwise its not a straight line so we need two rotations
+            else
+            {
+                rotate(x);
+                rotate(x);
+                return x;
+            }
         }
     } // ----------- end of nested BalanceableBinaryTree class -----------
 

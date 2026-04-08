@@ -30,32 +30,62 @@ public class AVLTreeMap<K, V> extends TreeMap<K, V> {
     /**
      * Returns the height of the given tree position.
      */
-    protected int height(Position<Entry<K, V>> p) {
-        // TODO
-        return 0;
+    protected int height(Position<Entry<K, V>> p)
+    {
+        if(p == null) return -1;
+        else
+        {
+            return (int) tree.getAux(p);
+        }
     }
 
     /**
      * Recomputes the height of the given position based on its children's heights.
      */
-    protected void recomputeHeight(Position<Entry<K, V>> p) {
-        // TODO
+    protected void recomputeHeight(Position<Entry<K, V>> p)
+    {
+        tree.setAux(p, 1 + Math.max(height(tree.left(p)), height(tree.right(p))));
     }
 
     /**
      * Returns whether a position has balance factor between -1 and 1 inclusive.
      */
     protected boolean isBalanced(Position<Entry<K, V>> p) {
-        // TODO
-        return false;
+        int balance = height(tree.left(p)) - height(tree.right(p));
+        return balance >= -1 && balance <= 1;
     }
 
     /**
      * Returns a child of p with height no smaller than that of the other child.
      */
     protected Position<Entry<K, V>> tallerChild(Position<Entry<K, V>> p) {
-        // TODO
-        return null;
+        int leftHeight = height(tree.left(p));
+        int rightHeight = height(tree.right(p));
+
+        if(leftHeight > rightHeight)
+        {
+            return tree.left(p);
+        }
+        else if(rightHeight > leftHeight)
+        {
+            return tree.right(p);
+        }
+        // if they are even choose same side as parent
+        else
+        {
+            if(tree.parent(p) == null)
+            {
+                return tree.left(p);
+            }
+            else if(p == tree.left(tree.parent(p)))
+            {
+                return tree.left(p);
+            }
+            else
+            {
+                return tree.right(p);
+            }
+        }
     }
 
     /**
@@ -64,7 +94,20 @@ public class AVLTreeMap<K, V> extends TreeMap<K, V> {
      * imbalance is found, continuing until balance is restored.
      */
     protected void rebalance(Position<Entry<K, V>> p) {
-        // TODO
+        int oldHeight, newHeight;
+        do
+        {
+            oldHeight = height(p);
+            if(!isBalanced(p))
+            {
+                p = restructure(tallerChild(tallerChild(p)));
+                recomputeHeight(tree.left(p));
+                recomputeHeight(tree.right(p));
+            }
+            recomputeHeight(p);
+            newHeight = height(p);
+            p = tree.parent(p);
+        } while(p != null && oldHeight != newHeight);
     }
 
     /**
@@ -80,7 +123,7 @@ public class AVLTreeMap<K, V> extends TreeMap<K, V> {
      */
     @Override
     protected void rebalanceDelete(Position<Entry<K, V>> p) {
-        // TODO
+        rebalance(p);
     }
 
     /**
